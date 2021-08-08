@@ -22,6 +22,10 @@ const main = async () => {
 	let RedisStore = connectRedis(session);
 	let redisClient = redis.createClient();
 
+	redisClient.on('error', (err) => {
+		console.log('Error ' + err);
+	});
+
 	app.use(
 		session({
 			name: 'qid',
@@ -35,6 +39,7 @@ const main = async () => {
 				sameSite: 'lax',
 				secure: __prod__, // only https
 			},
+			saveUninitialized: false,
 			secret: 'aksjfhlaskdfjsadjfhsllasdhf',
 			resave: false,
 		})
