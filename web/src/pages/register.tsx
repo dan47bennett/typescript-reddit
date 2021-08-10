@@ -1,38 +1,55 @@
-import React from 'react';
-import { Formik, Form } from 'formik';
+import React from "react";
+import { Formik, Form } from "formik";
 import {
-	FormControl,
-	FormLabel,
-	Input,
-	FormErrorMessage,
-} from '@chakra-ui/react';
+  FormControl,
+  FormLabel,
+  Input,
+  FormErrorMessage,
+  Box,
+  Button,
+} from "@chakra-ui/core";
+import { Wrapper } from "../components/Wrapper";
+import { InputField } from "../components/InputField";
 
-interface RegisterProps {}
+interface registerProps {}
 
-const Register: React.FC<RegisterProps> = ({}) => {
-	return (
-		<Formik
-			initialValues={{ username: '', password: '' }}
-			onSubmit={(values) => {
-				console.log('values: ', values);
-			}}
-		>
-			{({ values, handleChange }) => (
-				<Form>
-					<FormControl>
-						<FormLabel htmlFor="username">Username</FormLabel>
-						<Input
-							value={values.username}
-							onChange={handleChange}
-							id="username"
-							placeholder="username"
-						/>
-						{/* <FormErrorMessage>{form.errors.name}</FormErrorMessage> */}
-					</FormControl>
-				</Form>
-			)}
-		</Formik>
-	);
+const Register: React.FC<registerProps> = ({}) => {
+  return (
+    <Wrapper variant="small">
+      <Formik
+        initialValues={{ username: "", password: "" }}
+        onSubmit={(values) => {
+          console.log(values);
+        }}
+      >
+        {({ isSubmitting }) => (
+          <Form>
+            <InputField
+              name="username"
+              placeholder="username"
+              label="Username"
+            />
+            <Box mt={4}>
+              <InputField
+                name="password"
+                placeholder="password"
+                label="Password"
+                type="password"
+              />
+            </Box>
+            <Button
+              mt={4}
+              type="submit"
+              isLoading={isSubmitting}
+              variantColor="teal"
+            >
+              register
+            </Button>
+          </Form>
+        )}
+      </Formik>
+    </Wrapper>
+  );
 };
 
 export default Register;
