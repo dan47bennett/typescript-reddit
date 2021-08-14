@@ -1,6 +1,6 @@
 # typescript-reddit
 
-A project to build a Reddit style site using Next.js, Typescript, postGreSQL and Graphql. Based on [this link](https://youtu.be/I6ypD7qv3Z8).
+A project to build a Reddit style site using Next.js, Typescript, postGreSQL and Graphql. Based on [this tutorial](https://youtu.be/I6ypD7qv3Z8).
 
 ## The repo
 
