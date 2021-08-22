@@ -13,7 +13,7 @@ import argon2 from 'argon2';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { USER_COOKIE } from '../constants';
 import { UsernamePasswordInput } from './UsernamePasswordInput';
-import { validateRegister } from 'src/utils/validateRegister';
+import { validateRegister } from '../utils/validateRegister';
 
 @ObjectType()
 class FieldError {
