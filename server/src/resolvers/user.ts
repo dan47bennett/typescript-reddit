@@ -82,15 +82,27 @@ export class UserResolver {
 			user = response[0];
 		} catch (err) {
 			if (err.code === '23505') {
-				//|| err.detail.includes('already exists')
-				return {
-					errors: [
-						{
-							field: 'username',
-							message: 'Username already taken',
-						},
-					],
-				};
+				if (err.detail.includes('email')) {
+					return {
+						errors: [
+							{
+								field: 'email',
+								message:
+									'There is already an account using that email address',
+							},
+						],
+					};
+				}
+				if (err.detail.includes('username')) {
+					return {
+						errors: [
+							{
+								field: 'username',
+								message: 'Username taken',
+							},
+						],
+					};
+				}
 			}
 		}
 
@@ -116,8 +128,8 @@ export class UserResolver {
 			return {
 				errors: [
 					{
-						field: 'username',
-						message: "That username doesn't exist.",
+						field: 'usernameOrEmail',
+						message: 'No account matching that username or email.',
 					},
 				],
 			};
