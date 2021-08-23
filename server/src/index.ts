@@ -8,21 +8,22 @@ import { buildSchema } from 'type-graphql';
 import { HelloResolver } from './resolvers/hello';
 import { PostResolver } from './resolvers/post';
 import { UserResolver } from './resolvers/user';
-import redis from 'redis';
+import Redis from 'ioredis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
 import cors from 'cors';
 
 const main = async () => {
 	const orm = await MikroORM.init(microConfig);
+
 	await orm.getMigrator().up();
 
 	const app = express();
 
 	let RedisStore = connectRedis(session);
-	let redisClient = redis.createClient();
+	let redis = new Redis();
 
-	redisClient.on('error', (err) => {
+	redis.on('error', (err) => {
 		console.log('Error ' + err);
 	});
 
@@ -37,7 +38,7 @@ const main = async () => {
 		session({
 			name: USER_COOKIE,
 			store: new RedisStore({
-				client: redisClient,
+				client: redis,
 				disableTouch: true,
 			}),
 			cookie: {
@@ -57,7 +58,7 @@ const main = async () => {
 			resolvers: [HelloResolver, PostResolver, UserResolver],
 			validate: false,
 		}),
-		context: ({ req, res }) => ({ em: orm.em, req, res }),
+		context: ({ req, res }) => ({ em: orm.em, req, res, redis }),
 	});
 
 	apolloServer.applyMiddleware({
