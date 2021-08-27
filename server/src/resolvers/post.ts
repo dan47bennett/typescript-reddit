@@ -1,4 +1,5 @@
-import { MyContext } from 'src/types';
+import { isAuth } from '../middleware/isAuth';
+import { MyContext } from '../types';
 import {
 	Arg,
 	Ctx,
@@ -7,6 +8,7 @@ import {
 	Mutation,
 	Query,
 	Resolver,
+	UseMiddleware,
 } from 'type-graphql';
 import { Post } from '../entities/Post';
 
@@ -31,13 +33,11 @@ export class PostResolver {
 	}
 
 	@Mutation(() => Post)
+	@UseMiddleware(isAuth)
 	async createPost(
 		@Arg('input') input: PostInput,
 		@Ctx() { req }: MyContext
 	): Promise<Post> {
-		if (!req.session.userId) {
-			throw new Error('Cannot create post: user not authenticated');
-		}
 		return Post.create({
 			...input,
 			creatorId: req.session.userId,
@@ -45,6 +45,7 @@ export class PostResolver {
 	}
 
 	@Mutation(() => Post, { nullable: true })
+	@UseMiddleware(isAuth)
 	async updatePost(
 		@Arg('id') id: number,
 		@Arg('title', () => String, { nullable: true }) title: string
@@ -60,6 +61,7 @@ export class PostResolver {
 	}
 
 	@Mutation(() => Boolean)
+	@UseMiddleware(isAuth)
 	async deletePost(@Arg('id') id: number): Promise<boolean> {
 		await Post.delete(id);
 		return true;
