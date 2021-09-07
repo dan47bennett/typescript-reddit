@@ -8,6 +8,8 @@ The repo is a monorepo structure containing both the front-end and back-end code
 
 ### Web
 
+The frontend web folder contains code using Next.js, GraphQL and the UI library Chakra to build out the site.
+
 To develop in the web folder run
 
 `npm run dev`
@@ -15,6 +17,8 @@ To develop in the web folder run
 and the development server will start up
 
 ### Server
+
+The server folder contains code using PostgreSQL, GraphQL, redis and TypeORM to build out the backend.
 
 To develop in the server folder run
 
